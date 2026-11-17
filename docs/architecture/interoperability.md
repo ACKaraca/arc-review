@@ -24,7 +24,12 @@ fidelity; review data formats are read and written at edit fidelity because Arc 
 | E57, LAS, LAZ, PLY, PTS, PTX, ASCII XYZ | view | `arc-io-pointcloud` | 3 | Converted to octree scene caches. |
 | Arc product documents (`.archb`, `.civilb`, `.solidb`, `.meshb`, `.draftb`) | data | via product CLI | 2 | Arc Review asks the installed product's headless CLI to export IFC or an Arc Scene; otherwise the user exports. Direct package reading is an open question. |
 | Plain-text file lists | n/a | `review-io` | 1 | One path per line; expands to model sources. |
-| DGN, 3DM, SKP, JT | view | out-of-process bridge | 3 | Optional; only where a library under an allowed license or a published specification exists. Never required for a core workflow. |
+| Arc exchange package and scene cache written by a connector | data | `review-io` | 5 | Written by an add-in inside the authoring application through its public API; item key: source id plus host element identifier. See [connectors](#connectors-and-licensed-bridges). |
+| 3DM | view, plus layers and user text | `review-io` over an open reader | 5 | NURBS and meshes tessellated; blocks as instances. Item key: object identifier. |
+| FBX | view | `review-io` over an open reader | 5 | Hierarchy, meshes, materials, custom properties; animation not read. |
+| DGN V7 | view, plus attributes | `review-io` from the published format | 5 | Cells as instances, levels as hierarchy. |
+| JT | view, plus product attributes | `review-io` from the published specification | 5 | Assembly structure and tessellated shape levels. |
+| SKP and other native project files without an open reader | view or data | connector or licensed bridge | 5 | Through a connector in the authoring application, or a conversion library the user has licensed and registered. Never required for a core workflow. |
 
 ## Drawings and sheets (read)
 
@@ -39,9 +44,10 @@ fidelity; review data formats are read and written at edit fidelity because Arc 
 
 | Format | Fidelity | Phase | Notes |
 |---|---|---|---|
-| Microsoft Project XML (MSPDI) | data | 3 | Tasks, hierarchy, planned and actual dates, cost fields. |
-| Primavera P6 XER and P6 XML | data | 3 | Activities, WBS, dates, cost. |
+| Microsoft Project XML (MSPDI) | data | 3 | Tasks, hierarchy, planned and actual dates, cost fields; from phase 5 also links, lags, calendars and constraints for critical path calculation. |
+| Primavera P6 XER and P6 XML | data | 3 | Activities, WBS, dates, cost; from phase 5 also relationships, calendars and constraints. |
 | CSV, XLSX | data | 3 | Field mapping defined per schedule source or catalog. |
+| Unit-rate cost databases (CSV, XLSX, documented JSON) | data | 5 | Entries with code, unit and rates by category; no price data is shipped, and licensed databases are imported by mapping. |
 | IDS 1.0 | edit | 3 | Information requirements; read and written. |
 | BCF 2.1, 3.0 (files and API) | edit | 2 | Native issue model ([ADR 0005](../adr/0005-bcf-native-issue-model.md)). |
 | COBie (spreadsheet or IFC) | data | 3 | Validation input. |
@@ -67,8 +73,26 @@ fidelity; review data formats are read and written at edit fidelity because Arc 
 | PNG, JPEG, TIFF, EXR | view | 1 | Images; EXR for rendered output. |
 | Image sequences, WebM (AV1) | view | 2 to 4 | Camera paths, simulations, animations. |
 | CSV, XLSX | data | 1 | Properties, results, workbooks, task tables. |
+| Schedule scenarios (MSPDI, CSV, XLSX) | data | 5 | Resequenced schedules and change lists as proposals for the scheduling tool. |
+| Unit-rate databases and estimate versions (CSV, XLSX, JSON) | data | 5 | Databases, estimates and version comparisons. |
 | HTML reports | view | 3 | Self-contained reports with images. |
 | DWG, DXF (version conversion) | data | 2 | Converted copies of drawings to a chosen version; DWG write arrives in phase 2 with `arc-io-dwg`. |
+
+## Connectors and licensed bridges
+
+Formats without a published specification are exchanged by connectors, not read from disk. A
+connector is an add-in that runs inside the user's own licensed copy of the authoring application,
+uses only that application's public API and writes an Arc exchange package or a scene cache
+([suite ADR-0017](https://github.com/ACKaraca/arc-suite/blob/main/docs/adr/0017-exchange-connectors-and-licensed-bridges.md)).
+Connectors are developed in the `arc-connectors` repository and never modify the model of the
+application they run in. Arc Review reads their output at data fidelity and, through the
+selection exchange of RV-AUTO-010, sends selection and view requests back to them
+([capabilities](../product/capabilities/27-application-connectors.md)).
+
+A licensed bridge is a conversion library that the user has licensed from its vendor or consortium
+and registered by path. It runs in a separate process behind the byte-level bridge, is never
+distributed with Arc Review and is never required for a core workflow. An open reader is used where
+a permissively licensed reader or a published specification exists.
 
 ## Mapping principles
 
@@ -105,6 +129,8 @@ fidelity; review data formats are read and written at edit fidelity because Arc 
 | PDF | Reading back with an independent PDF parser; text and layer checks |
 | DWG, DXF | Round trip through Arc readers plus an independent open-source reader where available |
 | JSON review data | JSON Schema validation of every written file |
+| Exchange packages from connectors | Schema validation of the package and a corpus of packages with expected item counts, keys and properties; scene caches are verified on load |
+| Schedule scenario exports | Reading back with the published MSPDI and P6 XML schemas |
 
 Readers are validated against corpus files with expected item counts, keys, properties and bounds,
 and are fuzzed.
@@ -120,9 +146,7 @@ version. The report is viewable in the application and exportable as JSON and CS
 
 | Content | Why | How it is exchanged instead |
 |---|---|---|
-| RVT, RFA | No published specification | IFC, or OpenUSD and glTF for visualization |
-| FBX | Proprietary SDK license | glTF or OpenUSD |
-| Native files of mechanical CAD systems without a published specification | No published specification | STEP AP242, with JT where a bridge exists |
+| Any format without a published specification, read by inspecting its files or binaries | Reverse engineering is excluded by suite ADR-0017; compiled or protected script files of other applications and codecs that forbid open distribution are excluded for the same reason | A connector, a licensed bridge, an open reader, or IFC, STEP, glTF, OpenUSD and JT |
 | Proprietary cache and published-package formats of other review tools | No published specification | IFC, BCF and the documented JSON review data |
 | Binary project-scheduling files | No published specification | MSPDI XML, P6 XML or XER, CSV |
 | Writing to any source model | Review data is kept apart ([ADR 0001](../adr/0001-review-data-separate-from-sources.md)) | BCF, reports and identifier lists to the author |

@@ -1,6 +1,7 @@
 # 0002 One engine, three delivery targets
 
-- Status: Accepted
+- Status: Accepted; extended by [0007](0007-mobile-is-a-fourth-target-of-the-same-engine.md) with a
+  mobile target
 - Scope: crate layering, `apps/`, `review-web`; see [delivery targets](../architecture/delivery-targets.md)
 
 ## Context

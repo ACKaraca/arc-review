@@ -19,7 +19,7 @@ behavior precisely enough to implement and test it.
 
 | File | Token | Scope | Rows |
 |---|---|---|---|
-| [01-federation.md](01-federation.md) | FED | Opening, federating, refreshing; units, placement and alignment; readers; scene caches | 43 |
+| [01-federation.md](01-federation.md) | FED | Opening, federating, refreshing; units, placement and alignment; readers; scene caches | 48 |
 | [02-model-tree.md](02-model-tree.md) | TREE | Model tree, item keys, properties, user properties, external data links | 32 |
 | [03-selection-search.md](03-selection-search.md) | SET | Picking, queries, quick find, selection sets and search sets | 28 |
 | [04-navigation.md](04-navigation.md) | NAV | Orbit, walk, fly, collision, gravity, avatars, camera, overlays | 35 |
@@ -31,8 +31,8 @@ behavior precisely enough to implement and test it.
 | [10-clash-detection.md](10-clash-detection.md) | CLASH | Tests, types, rules, runs, result identity and workflow, grouping, reports | 55 |
 | [11-model-checking.md](11-model-checking.md) | CHECK | Rule sets, IDS validation, bSDD, classification, COBie, findings | 34 |
 | [12-issues-bcf.md](12-issues-bcf.md) | ISSUE | BCF-native issues, lists, reports, BCF files and API | 26 |
-| [13-sequencing.md](13-sequencing.md) | SEQ | 4D tasks, schedule import, attachment, simulation, progress | 27 |
-| [14-cost.md](14-cost.md) | COST | 5D cost fields, breakdowns, rates, curves, baselines | 14 |
+| [13-sequencing.md](13-sequencing.md) | SEQ | 4D tasks, schedule import and logic, attachment, simulation, progress, critical path and what-if scenarios | 33 |
+| [14-cost.md](14-cost.md) | COST | 5D cost fields, breakdowns, rates, curves, baselines, unit-rate databases, estimate versions | 19 |
 | [15-takeoff.md](15-takeoff.md) | QTO | Takeoff catalogs, 3D and 2D takeoff, change analysis, export | 24 |
 | [16-comparison.md](16-comparison.md) | COMP | Model version comparison and sheet comparison | 15 |
 | [17-drawings.md](17-drawings.md) | SHEET | Sheets and sheet sets, sheet markup and measurement, plotting, DWG conversion | 35 |
@@ -45,8 +45,10 @@ behavior precisely enough to implement and test it.
 | [24-hub-integration.md](24-hub-integration.md) | HUB | Hub connection, versions, synchronization, Hub jobs | 17 |
 | [25-automation.md](25-automation.md) | AUTO | Commands, automation protocol, CLI, Python, node graphs, plug-ins | 22 |
 | [26-interoperability.md](26-interoperability.md) | XCHG | Export formats, review data exchange, conformance, identifiers | 22 |
+| [27-application-connectors.md](27-application-connectors.md) | CONNECT | Connector export from authoring applications, re-export, batch, switch-back, licensed bridges | 20 |
+| [28-mobile.md](28-mobile.md) | MOBILE | Tablet and phone builds, field markup and issues, offline packages, augmented-reality overlay | 22 |
 
-Total: 662 capabilities.
+Total: 720 capabilities.
 
 ## Capabilities and issues
 

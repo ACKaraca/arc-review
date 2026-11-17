@@ -11,6 +11,7 @@ Arc Review vocabulary, one line per term. Suite-wide terms are defined in
 | Appearance rule set | An ordered list of rules that color items by query or by property value. |
 | Attachment link | A URL, file, viewpoint or issue attached to a scene item and shown as an icon. |
 | Attachment rule | A rule that attaches items to 4D tasks by matching a task field to item properties. |
+| Augmented-reality overlay | The model drawn over the live camera image on a tablet or phone, aligned to the site. |
 | BCF | BIM Collaboration Format; the open standard Arc Review uses natively for issues. |
 | Camera path | An animated camera built from viewpoints or recorded navigation. |
 | Check finding | One rule violation reported by a check rule set, with stable identity across runs. |
@@ -22,12 +23,16 @@ Arc Review vocabulary, one line per term. Suite-wide terms are defined in
 | Clash test | Definition of a clash check: sides A and B, type, tolerance, rules and options. |
 | Comment thread | Ordered comments with a status, attached to a review object. |
 | Comparison run | A comparison between two versions of a model source or two sheets, producing difference records. |
+| Connector | An add-in running inside the user's own licensed authoring application that exports through its public API and receives switch-back requests. |
 | Content key | The hash of source bytes, reader version and reader options that identifies a scene cache. |
 | Conversion setup | Saved settings for converting drawings to another DWG or DXF version. |
 | Coverage validation | The check that every task has items and every relevant item has a task. |
+| Critical path | The chain of linked tasks whose delay delays the finish of the schedule, calculated from task links, calendars and constraints. |
 | Derived key | An item key computed from path and geometry when a source provides no element identifier. |
 | Difference record | One added, removed, changed or moved item, or one changed region of a sheet. |
 | Drawing source | A DWG, DXF, PDF or raster file read as sheets. |
+| Estimate version | A frozen state of an estimate that can be compared with other versions. |
+| Exchange package | The open, documented container in which connectors carry geometry, semantics, parameters, types, identifiers and relationships. |
 | External data link | A connection that adds read-only properties from a table matched by a key column. |
 | Federation | The ordered set of model sources combined into one scene in a review document. |
 | File list | A plain-text file naming model paths, one per line. |
@@ -38,11 +43,13 @@ Arc Review vocabulary, one line per term. Suite-wide terms are defined in
 | Issue | A BCF topic with fields, comments and viewpoints, synchronized with Arc Hub. |
 | Item key | The stable identity of a scene item: model source identifier plus source element identifier. |
 | Key quality | The share of a source's items that carry source identifiers, and the duplicates found. |
+| Licensed bridge | A conversion library the user has licensed separately and registered; it runs in a separate process and is never distributed with Arc Review. |
 | Linked review document | A review document that references its sources and stores only review data. |
 | Markup | Redline geometry drawn on a viewpoint or a sheet. |
 | Markup set | A named collection of sheet markups with author and status. |
 | Model source | One source file or Hub version in a federation, with unit, placement and reader options. |
 | Model tree | The hierarchy of scene items under each model source. |
+| Offline package | A Hub folder or published package downloaded to a mobile device for use without a connection. |
 | Packaged review document | A review document with the scene caches of its sources embedded for hand-off. |
 | Pick level | The level of the hierarchy that a click in the scene selects. |
 | Placement | Unit scale, rigid transform and optional CRS alignment of a model source. |
@@ -55,6 +62,7 @@ Arc Review vocabulary, one line per term. Suite-wide terms are defined in
 | Review document | The `.arcrev` document holding the federation manifest and all review data. |
 | Scene cache | The derived, content-addressed conversion of one model source used for display and analysis. |
 | Scene item | A node of the model tree: source root, container, object or geometry. |
+| Schedule scenario | A copy of a schedule in which tasks and links can be changed to test a resequencing, without touching the source. |
 | Search set | A saved query whose membership is re-evaluated when the federation changes. |
 | Section state | Up to six section planes or one section box, with caps. |
 | Selection set | A saved, fixed list of item keys. |
@@ -62,10 +70,12 @@ Arc Review vocabulary, one line per term. Suite-wide terms are defined in
 | Sheet calibration | A two-point scale definition that makes measurement on PDF and raster sheets exact. |
 | Sheet set | An ordered, numbered list of sheets from several drawing sources. |
 | Simulation | Playback of task states over time in planned, actual or comparison mode. |
+| Switch-back | A request from Arc Review to a connector to select elements or show a view in the authoring application. |
 | Tag | A numbered leader note with a comment thread, placed in a viewpoint. |
 | Takeoff catalog | Takeoff items with units and formulas, and resources with rates. |
 | Takeoff record | One measured quantity from scene items, sheet geometry or a virtual entry. |
 | Task type | A 4D task category defining item appearance at start, during and after a task. |
+| Unit-rate database | A table of entries with code, unit and rates by category, used to price quantities. |
 | Viewpoint | A saved camera with an optional bundle of visibility, appearance, section and markup state. |
 | Visibility state | Per-item hidden, visible or required state. |
 | XR session | A live review session shared by headset and desktop participants. |

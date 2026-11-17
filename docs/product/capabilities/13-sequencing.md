@@ -3,7 +3,10 @@
 4D sequencing links a construction schedule to the federation so that the model can be played
 through time: what is built, demolished or temporarily present on any date, planned against actual.
 Schedules are imported from scheduling files and remain linked for re-synchronization; tasks,
-attachments and simulation settings are review data.
+attachments and simulation settings are review data. Beyond playback, Arc Review calculates the
+critical path of an imported schedule and tests resequencing in scenarios. Authoring full schedules,
+including resource leveling and resource-loaded baselines, stays in scheduling tools: a scenario
+here is a what-if on imported logic, and its result leaves as an export for the scheduling tool.
 
 ## Domain objects
 
@@ -15,6 +18,7 @@ attachments and simulation settings are review data.
 | Task type | Name, appearance at start, during and end, appearance when early or late, end state (visible, hidden, model appearance) | Assigned to tasks |
 | Attachment rule | Task field or pattern, query template over item properties, matching options | Attaches items to tasks |
 | Simulation | Mode (planned, actual, planned against actual), start and end, interval, playback duration, overlay definition, camera source | Plays one schedule |
+| Task link | Predecessor task, successor task, type (finish-to-start, start-to-start, finish-to-finish, start-to-finish), lag | Read from the schedule source; used by critical path calculation |
 | Progress record | Date, task, percent complete or actual dates, author, optional photo or note | Updates task actuals |
 
 ## Schedule data
@@ -63,3 +67,14 @@ attachments and simulation settings are review data.
 | RV-SEQ-025 | Resource-loaded tasks | Tasks can carry resource quantities (crews, equipment) imported from the schedule source, shown as histograms over time. | T3 | 5 |
 | RV-SEQ-026 | Location-based flowline view | A flowline chart plots tasks by location (level or zone) against time, derived from task attachments. | T3 | 5 |
 | RV-SEQ-027 | Site logistics items | Temporary items without source geometry (cranes, hoarding, laydown areas) can be placed from a library as review-only geometry and attached to temporary tasks. | T3 | 5 |
+
+## Schedule logic and what-if resequencing
+
+| ID | Capability | Behavior | Tier | Phase |
+|---|---|---|---|---|
+| RV-SEQ-028 | Task logic | Predecessor and successor links with their type and lag, task calendars and date constraints are read from MSPDI, P6 XER and P6 XML sources and kept as task links; links can be added, changed and removed in a scenario as undoable commands. Logic that a source format does not carry is reported in the import report. | T3 | 5 |
+| RV-SEQ-029 | Critical path calculation | A forward and a backward pass over the task links, calendars and constraints compute early and late dates, total and free float and the critical path of a schedule. Loops in the logic and tasks without links are listed instead of calculated through. | T3 | 5 |
+| RV-SEQ-030 | Critical path display | Critical and near-critical tasks, with a settable float threshold, are marked in the task table and Gantt chart, and their items are colored in the simulation. | T3 | 5 |
+| RV-SEQ-031 | What-if resequencing | In a scenario (RV-SEQ-024) tasks can be moved, re-linked, lengthened or shortened, and the schedule is recalculated at once; the result shows the change of finish date, of float and of the critical path against the base scenario. Edits never reach the linked source. | T3 | 5 |
+| RV-SEQ-032 | Scenario outcome comparison | Scenarios are compared by finish date, critical path and the list of tasks whose dates or float differ, in the table and in the side-by-side simulation. | T3 | 5 |
+| RV-SEQ-033 | Scenario hand-off | A scenario is exported as a proposed schedule through the formats of RV-SEQ-009 and as a change list, so that the scheduling tool's owner applies it there. | T3 | 5 |

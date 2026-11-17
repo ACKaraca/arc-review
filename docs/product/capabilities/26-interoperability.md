@@ -1,8 +1,8 @@
 # Interoperability
 
 Interoperability covers what Arc Review writes and the exchange of review data with other tools.
-Importers are specified in [01-federation.md](01-federation.md) and
-[19-reality-data.md](19-reality-data.md); fidelity levels per format and direction are listed in
+Importers are specified in [01-federation.md](01-federation.md),
+[19-reality-data.md](19-reality-data.md) and [27-application-connectors.md](27-application-connectors.md); fidelity levels per format and direction are listed in
 [interoperability.md](../../architecture/interoperability.md).
 
 ## Domain objects
@@ -48,5 +48,5 @@ Importers are specified in [01-federation.md](01-federation.md) and
 | RV-XCHG-018 | Report exports | Reports render to HTML with images and to PDF. | T2 | 2 |
 | RV-XCHG-019 | Identifier maps | Exports and reports carry each item's key and source identifier so other tools can find the element in the source model. | T1 | 1 |
 | RV-XCHG-020 | Element identifiers in every output | Every report row, tabular export and BCF component written by Arc Review carries the model source name and the source element identifier in addition to the item key. Authoring tools can therefore locate elements without reading Arc Review data; Arc products use the direct selection request of RV-AUTO-010. | T2 | 3 |
-| RV-XCHG-021 | Proprietary formats through open formats | Formats without a published specification are not read or written; their content enters through IFC, STEP, glTF or OpenUSD exported by the authoring tool. | T1 | 1 |
+| RV-XCHG-021 | Proprietary formats through connectors and open formats | Formats without a published specification are not read or written directly. Their content enters through a connector running in the authoring application (RV-CONNECT-001), a registered licensed bridge (RV-CONNECT-018) or IFC, STEP, glTF or OpenUSD exported by the authoring tool. | T1 | 1 |
 | RV-XCHG-022 | Sheet exports | Sheets and markups export to PDF, SVG, PNG and converted DWG or DXF releases (see [17-drawings.md](17-drawings.md)). | T1 | 1 |

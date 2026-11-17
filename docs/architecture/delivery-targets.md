@@ -1,9 +1,11 @@
 # Delivery targets
 
 Arc Review is one engine delivered as three targets: the desktop application, the read-only viewer
-and the WebAssembly viewer bundle consumed by Arc Hub. This document defines what each target
-contains and how the layering keeps the engine free of windowing dependencies. The decision is
-recorded in [ADR 0002](../adr/0002-one-engine-three-delivery-targets.md).
+and the WebAssembly viewer bundle consumed by Arc Hub. A fourth target, the tablet and phone build,
+is added in phase 5. This document defines what each target contains and how the layering keeps the
+engine free of windowing dependencies. The decisions are recorded in
+[ADR 0002](../adr/0002-one-engine-three-delivery-targets.md) and
+[ADR 0007](../adr/0007-mobile-is-a-fourth-target-of-the-same-engine.md).
 
 ## Targets at a glance
 
@@ -50,6 +52,17 @@ repository ships Rust compiled to WebAssembly and the bindings generated from it
 to any external translation service: Hub converts sources with the same `review-io` readers running
 headless.
 
+### Mobile build
+
+For site work on iOS and Android tablets and phones (phase 5). It is built from the same engine
+crates, `review-ui` and `arc-app`, with touch input mapped to the same navigation and tool events.
+Its registry is the read-only registry plus commands for markups, comments, issues, saved
+measurements, progress records and photo attachments; it does not link `review-analysis`. It opens
+packaged documents, published packages and Hub versions, keeps downloaded packages for offline use
+and replays its offline queue through Hub on reconnection. The augmented-reality overlay uses the
+`review-ar` crate, which keeps device camera and motion tracking behind one boundary. Capabilities:
+[mobile](../product/capabilities/28-mobile.md).
+
 ## Layering
 
 ```mermaid
@@ -67,6 +80,7 @@ flowchart TB
   app["arc-app (winit, windowing)"]
   web["review-web (canvas, host interface)"]
   xr["review-xr (OpenXR)"]
+  ar["review-ar (device tracking)"]
 
   desktop["apps/arc-review"] --> rui & app & cmdsrw & analysis & xr
   viewer["apps/arc-review-viewer"] --> rui & app & cmdsro
@@ -74,6 +88,8 @@ flowchart TB
   web --> gpu & cmdsro
   rui --> gpu & cmdsro
   xr --> gpu
+  mobile["apps/arc-review-mobile"] --> rui & app & cmdsrw & ar
+  ar --> gpu
   cmdsrw --> cmdsro & analysis
   cmdsro --> engine
   gpu --> scene
@@ -93,18 +109,19 @@ Rules that keep the engine portable:
 4. Input is translated into engine-level navigation and tool events by the host layer (`review-ui`
    on the desktop, `review-web` in the browser, `review-xr` in a headset), so navigation behavior is
    implemented once.
-5. Mutating commands are registered in a separate registry module; a target that does not link it
+5. Mutating commands are registered in a separate registry module, and the mobile registry takes
+   only the review-data subset of it; a target that does not link it
    cannot execute them through any surface (UI, protocol, plug-ins).
 6. CI builds the engine crates for `wasm32-unknown-unknown` on every change and runs the
    registry test that asserts the read-only registry contains no mutating command.
 
 ## Compatibility between targets
 
-- All three targets read the same review document and scene cache formats. The viewer and the
+- All targets read the same review document and scene cache formats. The viewer and the
   browser bundle of a release read documents and caches written by any earlier release and by later
   releases of the same major format.
 - A capability that a target lacks degrades visibly: the viewer shows clash results but has no run
   command; the browser shows a simulation that was baked into the document as task states.
-- Package restrictions are enforced by all three targets alike. Because the code is open, an
+- Package restrictions are enforced by all targets alike. Because the code is open, an
   expiry date or hidden property set is a publishing convention unless the package is encrypted;
   the documents state this plainly (see [open questions](../product/open-questions.md)).

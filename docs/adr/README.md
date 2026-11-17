@@ -2,7 +2,7 @@
 
 Decisions specific to Arc Review. Suite-wide decisions (repository topology, UI toolkit, document
 model, document package, command model, interoperability policy, rendering contract, collaboration
-stages, extensibility, licensing, robustness) are recorded once in
+stages, extensibility, licensing, robustness, connectors and licensed bridges, web and mobile targets) are recorded once in
 [`arc-suite/docs/adr`](https://github.com/ACKaraca/arc-suite/tree/main/docs/adr) and are not
 restated here.
 
@@ -16,6 +16,8 @@ restated here.
 | [0004](0004-clash-identity-and-open-result-format.md) | Clash result identity across runs and an open result format | Accepted |
 | [0005](0005-bcf-native-issue-model.md) | Issues use the BCF model natively | Accepted |
 | [0006](0006-review-sessions-synchronize-state-not-geometry.md) | Live review sessions synchronize review state, not geometry | Accepted |
+| [0007](0007-mobile-is-a-fourth-target-of-the-same-engine.md) | Mobile is a fourth target of the same engine | Accepted |
+| [0008](0008-switch-back-requests-carry-identifiers-only.md) | Switch-back requests carry identifiers only | Accepted |
 
 ## Template
 

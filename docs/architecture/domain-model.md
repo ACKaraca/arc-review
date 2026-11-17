@@ -24,6 +24,8 @@ key.
 | `Placement` | unit scale, translation (f64), rotation, optional survey point pair or CRS alignment | One per `ModelSource` |
 | `KeyMapping` | from content key, to content key, matched pairs, method per pair (identifier, path, geometry), quality score | Produced by refresh; consumed by regeneration |
 | `LossReport` | source, entries (kind, count, examples) | One per conversion of a `ModelSource` |
+| `ConnectorLink` | connector id and version, host kind, project reference, last export revision and time, switch-back endpoint when the host runs | Optional, one per `ModelSource` whose origin is a connector; used for refresh and switch-back |
+| `LicensedBridge` | library kind, user-supplied path, detected version, enabled | Application setting, not document data; named in the `LossReport` of sources it converted |
 
 ### Scene (in scene caches, referenced by item key)
 
@@ -85,12 +87,16 @@ key.
 |---|---|---|
 | `ScheduleSource` | reference, format, field mapping, last synchronized | Produces tasks |
 | `Task` | name, parent, planned start and end, actual start and end, type, progress, cost fields, local overrides | Attached to sets or attachment rules; may reference an animation clip |
+| `TaskLink` | predecessor, successor, type, lag | Between two tasks of one schedule; read from the source or edited in a scenario |
+| `ScheduleScenario` | name, base schedule, edits (moved, re-linked, re-timed tasks), calculated float and critical path | Owns edits that never reach the schedule source |
 | `TaskType` | name, appearance at start, during, end, early and late | Used by tasks |
 | `AttachmentRule` | task field, query template, match mode | Links tasks to items |
 | `Simulation` | mode (planned, actual, planned versus actual), interval, range, overlay, camera | Reads tasks; produces item states per time |
 | `TakeoffCatalog` | items (code, name, unit, formulas), resources (unit, rate) | Shared or per document |
 | `TakeoffRecord` | catalog item, origin (3D item keys, 2D sheet geometry, virtual), measured quantities, formula results, change state | Belongs to a workbook |
 | `CostItem` | code, breakdown position, quantity, rate, amount, currency | References takeoff records and tasks |
+| `UnitRateDatabase` | name, version, currency, effective date, region, entries (code, description, unit, rates by category) | Referenced by cost items and takeoff catalog items |
+| `EstimateVersion` | name, date, frozen quantities, rates, database versions, totals per code | Compared with other versions of the same document |
 
 ### Sheets and output
 
@@ -135,7 +141,8 @@ erDiagram
    keeps its identifier so all review data stays attached.
 3. An **item key** is (model source identifier, source element identifier). Source element
    identifiers by format: IFC GlobalId; DWG and DXF handle; STEP product path and instance
-   identifiers; glTF node path; OpenUSD prim path; point cloud source plus scan identifier.
+   identifiers; glTF node path; OpenUSD prim path; point cloud source plus scan identifier; 3DM
+   object identifier; DGN V7 element handle; exchange package host element identifier.
 4. When a source provides no identifier, a **derived key** is computed from the item's path of
    names and its geometry hash; derived keys are flagged, and the source's key quality (share of
    items with source identifiers, duplicates found) is shown in source information.
@@ -158,6 +165,11 @@ erDiagram
   own test only.
 - Every clash run and check run records the content key of each involved source.
 - A task's planned end is not before its planned start; actual dates may be empty.
+- A scenario edit never changes its schedule source; calculation reports loops in task links
+  instead of computing through them.
+- An estimate version is immutable once frozen.
+- A connector link never grants write access to the host project: switch-back requests carry
+  identifiers and view parameters only ([ADR 0008](../adr/0008-switch-back-requests-carry-identifiers-only.md)).
 - A packaged document embeds a scene cache for every enabled source; a linked document embeds none.
 - The read-only targets hold documents open without a write handle.
 
@@ -177,6 +189,9 @@ with the federation revision it was computed from.
 | Clash rule or test settings changed | Test marked stale | On demand |
 | Clash run completed | Results matched to existing identities; groups re-evaluated for automatic grouping; dashboards | Automatic after run |
 | Task dates, types or attachments changed | Simulation states; cost curve | Automatic |
+| Task links, calendars, constraints or scenario edits changed | Early and late dates, float and critical path of that schedule or scenario | Automatic |
+| Unit-rate database replaced or mapping changed | Rates of mapped cost items and takeoff items; totals; unmapped list | Automatic |
+| Connector re-exports a source | New scene cache or incremental changes applied; key mapping; stale marking as for a refreshed source | Automatic when the refresh policy says so |
 | Schedule source synchronized | Tasks updated per field mapping, preserving local overrides marked as kept | On demand |
 | Takeoff catalog formula or rate changed | All records using it; cost items | Automatic |
 | Sheet calibration changed | 2D takeoff records and sheet measurements on that sheet | Automatic |

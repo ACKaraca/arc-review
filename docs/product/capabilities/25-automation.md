@@ -33,7 +33,7 @@ scripts, node graphs and sandboxed WebAssembly plug-ins extend the product throu
 | RV-AUTO-007 | Headless CLI | `arc-review-cli` runs on Windows, macOS and Linux without a display, an account or a license server, with subcommands to convert, validate, append, refresh, run clash tests and checks, export reports and images, publish packages, plot sheets and run batch job definitions. | T1 | 1 |
 | RV-AUTO-008 | CLI exit codes and output | The CLI returns documented exit codes and can write machine-readable JSON results to standard output for use in CI pipelines. | T1 | 1 |
 | RV-AUTO-009 | CI result formats | Headless runs of checks, clash tests and comparisons (RV-CHECK-032, RV-CLASH-026) can write their outcome as JUnit XML and as a JSON summary, so continuous integration systems display failures as test results and keep the report as a build artifact. | T2 | 3 |
-| RV-AUTO-010 | Selection exchange with other Arc applications | Arc Review answers protocol requests to read or set its selection by item key and can send the same request to a running Arc product; the request carries source element identifiers so the receiver resolves them without Arc Review types. Clash results use it through RV-CLASH-054. | T2 | 3 |
+| RV-AUTO-010 | Selection exchange with other Arc applications | Arc Review answers protocol requests to read or set its selection by item key and can send the same request to a running Arc product or to a connector in an authoring application (see [27-application-connectors.md](27-application-connectors.md)); the request carries source element identifiers so the receiver resolves them without Arc Review types. Clash results use it through RV-CLASH-054. | T2 | 3 |
 
 ## Scripting, graphs and plug-ins
 

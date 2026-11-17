@@ -1,7 +1,7 @@
 # Arc Review
 
 Model and drawing review for buildings and infrastructure: federation, clash detection, model
-checking, 4D and 5D, quantity takeoff, markup and immersive review.
+checking, 4D and 5D, quantity takeoff, markup, mobile field review and immersive review.
 
 > **Status: design phase.** No builds are available yet. This repository contains the product definition, architecture and roadmap that implementation follows.
 
@@ -13,7 +13,9 @@ check them against information requirements; manage issues in BCF; simulate cons
 with cost; take off quantities from models and sheets; and compare versions. It never edits source
 models: all review results live in its own open document (`.arcrev`). It runs on Windows, macOS
 and Linux, works offline, connects to Arc Hub for shared work, and reaches recipients through a
-read-only viewer, a browser viewer and multi-user OpenXR sessions built on the same engine.
+read-only viewer, a browser viewer, tablet and phone builds and multi-user OpenXR sessions built on
+the same engine. Models from other authoring applications arrive through connectors that export
+through the applications' public APIs, open readers or open formats.
 
 ## Who it is for
 
@@ -37,8 +39,8 @@ results.
 | [Clash detection](docs/product/capabilities/10-clash-detection.md) | Tests, rules, result identity, grouping, assignment, reports |
 | [Model checking](docs/product/capabilities/11-model-checking.md) | Rule sets, IDS validation, classification, bSDD, COBie |
 | [Issues and BCF](docs/product/capabilities/12-issues-bcf.md) | BCF-native issues, files and API |
-| [4D sequencing](docs/product/capabilities/13-sequencing.md) | Schedule import, attachment, simulation, progress |
-| [5D cost](docs/product/capabilities/14-cost.md) | Cost fields, breakdowns, rates, curves |
+| [4D sequencing](docs/product/capabilities/13-sequencing.md) | Schedule import, attachment, simulation, progress, critical path, what-if scenarios |
+| [5D cost](docs/product/capabilities/14-cost.md) | Cost fields, breakdowns, rates, curves, unit-rate databases, estimate versions |
 | [Quantity takeoff](docs/product/capabilities/15-takeoff.md) | 3D and 2D takeoff, catalogs, change analysis |
 | [Comparison](docs/product/capabilities/16-comparison.md) | Model version and sheet comparison |
 | [Drawings and sheets](docs/product/capabilities/17-drawings.md) | Sheet viewing, markup, measurement, plotting, DWG version conversion |
@@ -51,14 +53,18 @@ results.
 | [Hub integration](docs/product/capabilities/24-hub-integration.md) | Versions, issues, markups, Hub jobs |
 | [Automation](docs/product/capabilities/25-automation.md) | Commands, protocol, CLI, Python, plug-ins |
 | [Interoperability](docs/product/capabilities/26-interoperability.md) | Exports, review data exchange, conformance |
+| [Application connectors](docs/product/capabilities/27-application-connectors.md) | Connector export from authoring applications, re-export, switch-back, licensed bridges |
+| [Mobile](docs/product/capabilities/28-mobile.md) | Tablet and phone builds, field markup, offline packages, augmented reality |
 
 ## How it fits in the suite
 
 Arc Review depends only on [`arc-core`](https://github.com/ACKaraca/arc-core) and cooperates with
-other Arc products at run time through the three suite contracts:
+other Arc products at run time through the suite contracts:
 
 - **Arc document package.** The review document is a document package; Arc product documents are
   opened through the products' headless exports.
+- **Arc exchange package.** Connectors in authoring applications write it; Arc Review reads it and
+  sends selection and view requests back to them.
 - **Arc Scene.** Federations are exported to RenderBuilder for photoreal rendering and video.
 - **Hub API.** Model source versions, BCF issues, markups, review jobs and the browser viewer run
   through [Arc Hub](https://github.com/ACKaraca/arc-hub).
@@ -107,7 +113,8 @@ Details: [architecture overview](docs/architecture/overview.md),
 | M3 | 3 | Coordination and checking: clash detection, model checking, comparison, point clouds, streaming |
 | M4 | 3 | Planning and quantities: 4D, 5D, takeoff |
 | M5 | 4 | Presentation through RenderBuilder, animation, video |
-| M6 | 5 | Immersive multi-user review and advanced analysis |
+| M6 | 5 | Immersive multi-user review, advanced analysis, schedule logic and estimating |
+| M7 | 5 | Connectors, mobile and field review |
 
 See [roadmap](docs/roadmap.md).
 
