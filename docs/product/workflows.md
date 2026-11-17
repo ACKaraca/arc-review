@@ -1,6 +1,6 @@
 # Reference workflows
 
-Twelve end-to-end workflows used as acceptance scenarios for the roadmap. Each step names the
+Fifteen end-to-end workflows used as acceptance scenarios for the roadmap. Each step names the
 capabilities it exercises; each workflow ends with observable acceptance results.
 
 ## 1. Federate discipline models
@@ -213,3 +213,60 @@ capabilities it exercises; each workflow ends with observable acceptance results
 - No model geometry passes through the session relay; participants load caches locally or from Hub.
 - Headset frame rate holds the runtime rate during the session.
 - Issues created in the session are BCF topics with viewpoints and snapshots.
+
+## 13. Models from an authoring application through a connector
+
+1. A connector installed in an authoring application exports the open project to an Arc exchange
+   package, scoped to one phase (RV-CONNECT-001, RV-CONNECT-004).
+2. Append the package to the federation (RV-FED-048, RV-CONNECT-002) and read its loss report
+   (RV-CONNECT-006).
+3. The author saves the project; the connector re-exports in the background, the source is marked
+   changed and refreshed, and the refresh report lists the changes (RV-CONNECT-008,
+   RV-CONNECT-010, RV-FED-016).
+4. Run a clash test and promote a group to an issue (RV-CLASH-022, RV-CLASH-049).
+5. From the issue, select the referenced elements in the authoring application and match its view
+   (RV-CONNECT-013 to RV-CONNECT-015).
+6. A nightly job exports a list of projects in batch and refreshes the federation
+   (RV-CONNECT-011, RV-CONNECT-012).
+
+**Acceptance**
+- Item keys, and therefore sets, clash results and issues, survive every re-export.
+- The switch-back request contains identifiers and view parameters only, and the host model is
+  unchanged afterwards.
+- Without the connector the same workflow works from IFC exported by the author, and the actions of
+  step 5 fall back to identifier lists and BCF.
+
+## 14. Field review on a tablet
+
+1. Download a Hub package for offline use (RV-MOBILE-014).
+2. On site, navigate, measure and read properties (RV-MOBILE-003, RV-MOBILE-005, RV-MOBILE-010).
+3. Mark up a viewpoint with a stylus, attach a photo and create an issue (RV-MOBILE-011,
+   RV-MOBILE-012, RV-MOBILE-013).
+4. Align the augmented-reality overlay to two surveyed points and capture the overlay with an issue
+   (RV-MOBILE-018, RV-MOBILE-019, RV-MOBILE-021).
+5. Reconnect; the queue replays with conflict reporting (RV-MOBILE-015, RV-HUB-007).
+
+**Acceptance**
+- Everything in steps 1 to 3 works with no connection.
+- The overlay residual is shown before the alignment is accepted, and the capture reproduces the
+  position from the stored alignment.
+- Issues created on the device are BCF topics with viewpoints and snapshots.
+
+## 15. Critical path and what-if resequencing
+
+1. Import a P6 XML schedule with its links and calendars (RV-SEQ-005, RV-SEQ-028).
+2. Calculate the critical path and color its items in the simulation (RV-SEQ-029, RV-SEQ-030).
+3. Create a scenario, move a task and add a link; read the change of finish date and critical path
+   (RV-SEQ-024, RV-SEQ-031).
+4. Compare the scenarios side by side (RV-SEQ-032).
+5. Export the scenario as a proposed schedule and change list for the scheduling tool
+   (RV-SEQ-033).
+6. Price the quantities from a unit-rate database, freeze an estimate version and compare it with
+   the previous one (RV-COST-016 to RV-COST-019).
+
+**Acceptance**
+- The calculated float and critical path of the base scenario match the values of the scheduling
+  tool for the same source within the calendar rules supported.
+- The linked source is unchanged after every scenario edit.
+- The estimate comparison separates quantity change from rate change.
+

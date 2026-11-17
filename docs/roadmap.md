@@ -15,6 +15,7 @@ milestones complete when their exit criteria pass.
 | M4 | 3 | Planning and quantities |
 | M5 | 4 | Presentation |
 | M6 | 5 | Immersive review and depth |
+| M7 | 5 | Connectors, mobile and field review |
 
 ## M1 Viewer (phase 1)
 
@@ -142,11 +143,35 @@ importers in `review-io`.
 - RV-XR-001 to RV-XR-021; RV-ISSUE-026.
 - RV-CLASH-014, RV-CLASH-028; RV-CHECK-011; RV-SEQ-025 to RV-SEQ-027; RV-COST-011.
 - RV-AUTO-006, RV-AUTO-021.
+- Schedule logic and estimating: RV-SEQ-028 to RV-SEQ-033; RV-COST-015 to RV-COST-019.
 
 **Dependencies.** OpenXR runtimes; Arc Hub session relay; suite assistant framework; `arc-brep`
-exact intersection.
+exact intersection; schedule importers that read links and calendars.
 
 **Exit criteria.**
 - Workflow 12 passes with at least two headsets and one desktop participant.
 - An assistant client lists clash results and creates an issue through the MCP endpoint, with
   preview and explicit apply.
+- Workflow 15 passes with MSPDI and P6 sources.
+
+## M7 Connectors, mobile and field review (phase 5)
+
+**Goal.** Bring models from authoring applications through connectors and open readers, and take
+review to tablets and phones, including the augmented-reality overlay on site.
+
+**Scope.**
+- Application connectors: RV-CONNECT-001 to RV-CONNECT-020.
+- Open readers and connector sources: RV-FED-044 to RV-FED-048.
+- Mobile: RV-MOBILE-001 to RV-MOBILE-022.
+
+**Dependencies.** The Arc exchange package specification in `arc-core`; the `arc-connectors`
+repository with at least one connector; iOS and Android builds of the engine crates, `review-ui` and
+`arc-app`; Hub offline queue; `review-ar`; open reader crates (`arc-io-mesh` for FBX, and format
+readers for 3DM, DGN V7 and JT) that pass the license allowlist.
+
+**Exit criteria.**
+- Workflow 13 passes with at least one connector, including incremental re-export and switch-back.
+- Workflow 14 passes on one tablet and one phone for each supported operating system.
+- 3DM, FBX, DGN V7 and JT corpus files open with the expected item counts and keys.
+- The mobile registry contains no analysis command (registry test), and the engine crates still
+  build for `wasm32-unknown-unknown`.

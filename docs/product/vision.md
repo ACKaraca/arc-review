@@ -15,7 +15,7 @@ immersive review, each with its own data and rarely with open exchange between t
 Arc Review is one application for that work. It reads models and drawings of many formats without
 changing them, federates them with correct units and placement, and keeps all review results in its
 own open document: viewpoints, sets, markups, clash tests and results, check findings, issues,
-construction sequences, quantities and costs. It runs on Windows, macOS and Linux, works fully
+construction sequences, quantities and costs. It runs on Windows, macOS and Linux and on tablets and phones, works fully
 offline, connects to Arc Hub for shared work, and reaches recipients through a read-only viewer and
 a browser viewer built from the same engine.
 
@@ -52,13 +52,16 @@ a browser viewer built from the same engine.
 
 ## Scope
 
-Federation of 3D models and 2D drawings; model tree and properties; selection, search and sets;
+Federation of 3D models and 2D drawings, including models from authoring applications through
+connectors, licensed bridges and open readers; model tree and properties; selection, search and sets;
 navigation; appearance and visibility; sectioning; viewpoints and animation; measurement; markup and
 comments; clash detection; rule-based model checking; issues and BCF; 4D sequencing; 5D cost;
-2D and 3D quantity takeoff; model and drawing comparison; sheet viewing, plotting and DWG version
+2D and 3D quantity takeoff with unit-rate cost databases and estimate versions; critical-path
+calculation and what-if resequencing on imported schedules; model and drawing comparison; sheet viewing, plotting and DWG version
 conversion; batch processing and publishing; point clouds and reality data; rendering and
 presentation through RenderBuilder; immersive multi-user review through OpenXR; the read-only
-viewer; the browser viewer; Hub integration; automation and extensibility. The full list is in the
+viewer; the browser viewer; tablet and phone builds with an augmented-reality overlay on site; Hub
+integration; automation and extensibility. The full list is in the
 [capability index](capabilities/README.md).
 
 ## Non-goals
@@ -66,11 +69,10 @@ viewer; the browser viewer; Hub integration; automation and extensibility. The f
 | Non-goal | Reason |
 |---|---|
 | Editing source models or drawings | Authoring belongs to the Arc authoring products and to each author's own tools; editing would break source ownership ([ADR 0001](../adr/0001-review-data-separate-from-sources.md)). |
-| Reading formats without a published specification (for example RVT) | Suite interoperability policy forbids reverse engineering; such models arrive through IFC, STEP, glTF or OpenUSD. |
-| Plug-ins inside other vendors' authoring applications | Round trips use identifiers through BCF, exported lists and the Arc Automation Protocol instead of in-process add-ins for third-party tools. |
+| Reading undocumented formats by reverse engineering | A legal limit set by [suite ADR-0017](https://github.com/ACKaraca/arc-suite/blob/main/docs/adr/0017-exchange-connectors-and-licensed-bridges.md); such models arrive through connectors, licensed bridges, open readers or open formats. |
 | A built-in photoreal path tracer | Rendering is provided by RenderBuilder through the Arc Scene contract. |
-| Full project scheduling (critical path calculation, resource leveling) | Schedules are authored in scheduling tools and imported; Arc Review visualizes, validates coverage and records progress. |
-| Full estimating and bid management | Arc Review produces quantities and cost breakdowns; pricing databases and bids stay in estimating tools fed by its exports. |
+| Authoring full schedules (resource leveling, resource-loaded baselines) | Schedules are authored in scheduling tools; Arc Review imports them, calculates the critical path, tests what-if scenarios and hands proposals back as exports. |
+| Bid management | Owned by commercial systems and not a design-review function; Arc Review provides quantities, unit-rate databases and estimate versions. |
 | A hosted cloud service | Collaboration is through self-hostable Arc Hub; no feature depends on a vendor cloud. |
 | License management, seat limits or expiring trials | The product is open source; the read-only viewer exists for simplicity, not for licensing. |
 
@@ -106,10 +108,16 @@ Each item below is a capability of Arc Review.
 - **Stable identity and alignment help.** Item key quality is measured per source, keys are mapped
   across refreshes, and CRS-aware placement with alignment suggestions reduces manual transforms.
 - **Planning depth.** Schedule coverage validation, planned-versus-actual delay views, progress
-  recording, scenarios and cost curves linked to takeoff.
-- **Every platform, no license server.** Windows, macOS and Linux desktop and viewer; a browser
-  viewer in self-hosted Hub with no external translation service; a headless CLI for automation and
-  continuous integration.
+  recording, critical-path calculation, what-if resequencing in scenarios, cost curves linked to
+  takeoff, unit-rate databases and estimate versions.
+- **Every platform, no license server.** Windows, macOS and Linux desktop and viewer; tablet and
+  phone builds; a browser viewer in self-hosted Hub with no external translation service; a headless
+  CLI for automation and continuous integration ([mobile](capabilities/28-mobile.md)).
+- **Models from other authoring applications.** Connectors inside the authoring application export
+  through its public API, re-export on save and switch back to the element or clash; open readers
+  cover 3DM, FBX, DGN V7 and JT ([connectors](capabilities/27-application-connectors.md)).
+- **Site use.** Markups, issues and offline packages on tablets and phones, and an overlay of the
+  model on the site in augmented reality.
 - **Live multi-user review.** Desktop and headset participants share one session through OpenXR on
   any conformant runtime, synchronizing review state rather than geometry
   ([ADR 0006](../adr/0006-review-sessions-synchronize-state-not-geometry.md)).

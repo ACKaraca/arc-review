@@ -2,7 +2,9 @@
 
 5D cost attaches money to the model and the schedule: cost items are priced from rates and
 quantities, assigned to tasks and rolled up over time. Costs come from takeoff, from the schedule
-source or from manual entry, and remain traceable to the scene items they price.
+source or from manual entry, and remain traceable to the scene items they price. Unit-rate cost databases and estimate versions
+support estimating from quantities. Bid management is not a design-review function and is left to
+commercial systems.
 
 ## Domain objects
 
@@ -12,6 +14,8 @@ source or from manual entry, and remain traceable to the scene items they price.
 | Cost item | Code, description, cost category (material, labor, equipment, subcontract, other), fixed amount or unit rate times quantity, quantity source, currency | Belongs to a cost breakdown; may be derived from takeoff items; may be assigned to tasks |
 | Rate | Resource or item, unit, unit cost, currency, effective date | Used by cost items and takeoff formulas |
 | Cost assignment | Cost item, task, share or distribution (front loaded, even, back loaded, by progress) | Links cost items to tasks |
+| Unit-rate database | Name, version, currency, effective date, region, entries (code, description, unit, rate by category, source) | Priced items refer to its entries |
+| Estimate version | Name, date, frozen quantities, rates, database version and totals | Compared with other versions |
 | Cost baseline | Name, date, frozen cost and schedule values | Compared with the current state |
 
 ## Cost data
@@ -42,3 +46,13 @@ source or from manual entry, and remain traceable to the scene items they price.
 | RV-COST-012 | Cost summary | A summary rolls up costs by breakdown code, task, category, level or any item property and exports to CSV, XLSX and JSON. | T1 | 3 |
 | RV-COST-013 | Item cost traceability | Selecting a cost item highlights the scene items that contribute its quantity; selecting an item lists the cost items it contributes to. | T2 | 3 |
 | RV-COST-014 | IFC cost export | Cost items and assignments are exported as IFC cost schedules and cost items related to the referenced elements by GlobalId. | T3 | 3 |
+
+## Unit-rate databases and estimate versions
+
+| ID | Capability | Behavior | Tier | Phase |
+|---|---|---|---|---|
+| RV-COST-015 | Unit-rate cost database | A unit-rate database holds entries with a code, description, unit and a rate per cost category (material, labor, equipment, subcontract, other), with a currency, a region and an effective date. A document uses one or more databases; they can also be shared through a Hub project library. | T3 | 5 |
+| RV-COST-016 | Database import and export | Databases are created from CSV, XLSX and documented JSON with a field mapping saved as a template and are exported in the same formats. Arc Review ships no price data; databases that the user has licensed from their publishers are imported by mapping and never redistributed. | T3 | 5 |
+| RV-COST-017 | Rate assignment from the database | Takeoff catalog items and cost items are mapped to database entries by code or by a query on item properties; the quantity is multiplied by the entry's rate. Items with no entry, unit mismatches and entries superseded by a later effective date are listed. | T3 | 5 |
+| RV-COST-018 | Estimate versions | The state of an estimate (quantities, assigned rates, database versions and totals per code) is frozen as a named estimate version, independently of the cost and schedule baselines of RV-COST-010. | T3 | 5 |
+| RV-COST-019 | Estimate comparison | Two estimate versions are compared per code with the difference split into quantity change, rate change and added or removed entries; the result is shown in a table and chart and exports to CSV, XLSX and JSON. | T3 | 5 |

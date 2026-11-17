@@ -6,27 +6,29 @@ targets, automation surface and testing strategy. Suite-wide architecture is def
 
 ## Crates of this repository
 
-The repository follows the suite product template and adds three crates, each for a second
+The repository follows the suite product template and adds crates, each for a second
 concrete boundary named below.
 
 | Crate | Level | Responsibility | Builds for |
 |---|---|---|---|
 | `review-model` | L3 | Review document schema on `arc-doc`: federation, model sources, placements, sets, queries, appearance rules, viewpoints, markups, comments, issues, clash tests and results, check rule sets and findings, tasks, cost and takeoff records, comparison runs. Query engine and rule evaluation. Regeneration rules between review objects. | native, wasm32 |
 | `review-scene` | L4 | Scene representation for large federations: scene cache format, item table, property store, geometry clusters and level-of-detail chains, spatial hierarchy, page residency and streaming policy, memory budgets. No GPU dependency. See [large models](large-models.md). | native, wasm32 |
-| `review-analysis` | L4 | Compute engines: clash detection, rule-based model checking and IDS validation, model and drawing comparison, quantity takeoff evaluation, 4D simulation state. Excluded from the read-only viewer and the browser bundle, which is its reason to exist as a crate. | native |
-| `review-io` | L4 | Mapping between `arc-io-*` neutral models and scene caches or review data: IFC, DWG/DXF, STEP, mesh formats, OpenUSD, point clouds, PDF sheets, BCF, IDS, schedules (MSPDI, P6), tabular and report writers, documented JSON review-data formats. | native, wasm32 (read paths) |
+| `review-analysis` | L4 | Compute engines: clash detection, rule-based model checking and IDS validation, model and drawing comparison, quantity takeoff evaluation, 4D simulation state, schedule logic and critical path. Excluded from the read-only viewer and the browser bundle, which is its reason to exist as a crate. | native |
+| `review-io` | L4 | Mapping between `arc-io-*` neutral models and scene caches or review data: IFC, DWG/DXF, STEP, mesh formats (including FBX), 3DM, DGN V7, JT, OpenUSD, point clouds, PDF sheets, Arc exchange packages and scene caches from connectors, BCF, IDS, schedules (MSPDI, P6), unit-rate databases, tabular and report writers, documented JSON review-data formats. | native, wasm32 (read paths) |
 | `review-commands` | L4 | User-level commands over the model, split into read-only and mutating registries. | native, wasm32 (read-only part) |
 | `review-ui` | L6 | Panels, tools and viewport interaction on `arc-ui`: model tree, property inspector, sets, results tables, task table, workbook, sheet browser, markup and measure tools. | native |
 | `review-web` | L5 | WebAssembly facade consumed by Arc Hub's browser client: canvas surface, input mapping, a versioned programming interface, Hub API streaming. No windowing or UI toolkit. | wasm32 |
 | `review-xr` | L6 | OpenXR session, stereo rendering through `arc-gpu`, controller interaction and the live review session protocol. Created in phase 5. | native |
+| `review-ar` | L6 | Augmented-reality overlay on tablets and phones: device camera and motion tracking, alignment to the site, capture of overlay images. Created in phase 5. | native (iOS, Android) |
 
 | Application | Contents |
 |---|---|
 | `apps/arc-review` | Desktop application: all registries, all panels, analysis engines. |
 | `apps/arc-review-viewer` | Read-only viewer: read-only registry, no `review-analysis`. |
 | `apps/arc-review-cli` | Headless CLI: convert, validate, check, run clash tests, compare, publish, batch, serve the automation protocol. |
+| `apps/arc-review-mobile` | Tablet and phone build (phase 5): read-only registry plus review-data commands, no `review-analysis`. |
 
-The three delivery targets and how layering keeps the engine free of windowing are described in
+The delivery targets and how layering keeps the engine free of windowing are described in
 [delivery targets](delivery-targets.md).
 
 ```mermaid
@@ -140,6 +142,9 @@ coloring and sectioning millions of items costs a buffer update, not a rebuild.
 | Comparison engine | `review-analysis` | Item matching by key; property diff; geometry diff by hashes and Hausdorff-bounded distance; sheet overlay by raster and vector difference. |
 | Simulation | `review-analysis` | Task state per date from planned and actual dates; produces visibility and appearance per item for a time value. |
 | Sheet engine | `arc-draft` via `review-io` | Drawings and PDF pages as sheets; calibration, sheet-to-model alignment, plotting and DWG version conversion. |
+| Schedule logic | `review-analysis` | Forward and backward pass over task links, calendars and constraints for float and critical path; what-if edits are recalculated in a scenario and never written to the linked source. |
+| Connector link | `review-io`, `review-commands` | Reads exchange packages and scene caches written by connectors, applies incremental exports, and sends selection and view requests to a connector over a local authenticated endpoint ([ADR 0008](../adr/0008-switch-back-requests-carry-identifiers-only.md)). Connectors themselves live in the `arc-connectors` repository. |
+| Cost databases | `review-model` | Unit-rate databases and estimate versions evaluated with the `arc-solve` expression engine; versions are frozen copies. |
 | Session protocol | `review-xr` | Review state synchronization (ADR 0006); used by headset and desktop participants. |
 
 ## Threading and background work
@@ -152,8 +157,9 @@ coloring and sectioning millions of items costs a buffer update, not a rebuild.
   (suite ADR on revision-tagged background work).
 - A residency task streams cache pages from disk or Hub in priority order (see
   [large models](large-models.md)).
-- Readers for formats behind an out-of-process bridge run in a child process with memory and time
-  limits; a crash of the bridge fails that source only.
+- Readers for formats behind an out-of-process bridge, including a conversion library the user has
+  licensed, run in a child process with memory and time limits; a crash of the bridge fails that
+  source only.
 - On WebAssembly, the worker pool uses web workers when cross-origin isolation is available and
   falls back to a single thread with time slicing otherwise.
 
