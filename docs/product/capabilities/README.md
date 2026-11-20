@@ -47,8 +47,9 @@ behavior precisely enough to implement and test it.
 | [26-interoperability.md](26-interoperability.md) | XCHG | Export formats, review data exchange, conformance, identifiers | 22 |
 | [27-application-connectors.md](27-application-connectors.md) | CONNECT | Connector export from authoring applications, re-export, batch, switch-back, licensed bridges | 20 |
 | [28-mobile.md](28-mobile.md) | MOBILE | Tablet and phone builds, field markup and issues, offline packages, augmented-reality overlay | 22 |
+| [29-assistance.md](29-assistance.md) | ASSIST | Optional assistance: federation questions, search by intent, issue summaries and drafts from notes, root-cause clash grouping, rule drafting, findings and changes explained, reports, task attachment and takeoff mapping | 15 |
 
-Total: 720 capabilities.
+Total: 735 capabilities.
 
 ## Capabilities and issues
 

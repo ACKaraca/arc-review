@@ -29,7 +29,7 @@ scripts, node graphs and sandboxed WebAssembly plug-ins extend the product throu
 | ID | Capability | Behavior | Tier | Phase |
 |---|---|---|---|---|
 | RV-AUTO-005 | Arc Automation Protocol | A running Arc Review serves JSON-RPC over stdio or a local socket for opening documents, running commands, querying the model tree and properties, and subscribing to selection and document events. | T1 | 1 |
-| RV-AUTO-006 | MCP endpoint | A Model Context Protocol endpoint derived from the command registry lets assistant clients call commands with preview and explicit apply for changes. | T3 | 5 |
+| RV-AUTO-006 | MCP endpoint | A Model Context Protocol endpoint derived from the command registry lets assistant clients call commands with preview and explicit apply for changes. | T3 | 2 |
 | RV-AUTO-007 | Headless CLI | `arc-review-cli` runs on Windows, macOS and Linux without a display, an account or a license server, with subcommands to convert, validate, append, refresh, run clash tests and checks, export reports and images, publish packages, plot sheets and run batch job definitions. | T1 | 1 |
 | RV-AUTO-008 | CLI exit codes and output | The CLI returns documented exit codes and can write machine-readable JSON results to standard output for use in CI pipelines. | T1 | 1 |
 | RV-AUTO-009 | CI result formats | Headless runs of checks, clash tests and comparisons (RV-CHECK-032, RV-CLASH-026) can write their outcome as JUnit XML and as a JSON summary, so continuous integration systems display failures as test results and keep the report as a build artifact. | T2 | 3 |
@@ -49,5 +49,5 @@ scripts, node graphs and sandboxed WebAssembly plug-ins extend the product throu
 | RV-AUTO-018 | Plug-in manager | A plug-in manager lists installed plug-ins with version, granted capabilities and trust, and enables, disables, updates and removes them. | T2 | 3 |
 | RV-AUTO-019 | Shared settings | Application settings, including reader options, display options and quick-property definitions, export to and import from a documented file so teams share one configuration; a project folder setting is read on start. | T2 | 1 |
 | RV-AUTO-020 | Environment variables in paths | Configured folder paths may contain environment variables, expanded when used. | T3 | 1 |
-| RV-AUTO-021 | Assistant panel | An optional assistant panel, using a user-configured provider including local models, proposes commands for preview and explicit apply; no document content leaves the machine without explicit action. | T3 | 5 |
+| RV-AUTO-021 | Assistant panel | An optional assistant panel, using a user-configured provider including local models, proposes commands for preview and explicit apply; no document content leaves the machine without explicit action. The assistance capabilities are in [29-assistance.md](29-assistance.md). | T3 | 2 |
 | RV-AUTO-022 | Localized interface | All interface strings come from message catalogues; English and Turkish are complete, and right-to-left layouts are supported. | T1 | 1 |

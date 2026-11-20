@@ -55,6 +55,7 @@ results.
 | [Interoperability](docs/product/capabilities/26-interoperability.md) | Exports, review data exchange, conformance |
 | [Application connectors](docs/product/capabilities/27-application-connectors.md) | Connector export from authoring applications, re-export, switch-back, licensed bridges |
 | [Mobile](docs/product/capabilities/28-mobile.md) | Tablet and phone builds, field markup, offline packages, augmented reality |
+| [Assistance](docs/product/capabilities/29-assistance.md) | Optional assistance checked by the clash, check, comparison and takeoff engines |
 
 ## How it fits in the suite
 

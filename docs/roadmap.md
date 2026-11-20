@@ -66,6 +66,8 @@ drawing output functions that need DWG write.
 - Publishing: RV-PUB-006, RV-PUB-008, RV-PUB-015 to RV-PUB-018, RV-PUB-021; RV-REND-016;
   RV-READ-017.
 - Remaining phase-2 rows of RV-NAV, RV-LOOK, RV-SECT, RV-MARK, RV-AUTO and RV-XCHG.
+- RV-ASSIST-001 to RV-ASSIST-005, RV-ASSIST-015, offered as each passes its task suite and never
+  gating this milestone.
 
 **Dependencies.** Arc Hub Documents module with BCF API and web client; `arc-hub-api`;
 `arc-io-bcf`; `arc-io-dwg` write; `arc-gpu` WebGPU and WebGL2 backends on `wasm32`.
@@ -90,6 +92,8 @@ streaming for production coordination.
 - RV-FED-007.
 - Phase-3 rows of RV-REAL, RV-TREE (key mapping, classification, external data links), RV-SET,
   RV-SECT, RV-MEAS, RV-FED, RV-WEB, RV-HUB, RV-AUTO and RV-XCHG.
+- RV-ASSIST-006 to RV-ASSIST-011, offered as each passes its task suite and never gating this
+  milestone.
 
 **Dependencies.** `arc-io-pointcloud`, `arc-io-usd`, `arc-io-geo`; `arc-gpu` cluster culling and
 streaming; Arc Hub jobs for headless runs.
@@ -110,6 +114,7 @@ streaming; Arc Hub jobs for headless runs.
 - RV-SEQ-001 to RV-SEQ-019, RV-SEQ-021 to RV-SEQ-024.
 - RV-COST-001 to RV-COST-010, RV-COST-012 to RV-COST-014.
 - RV-QTO-001 to RV-QTO-024.
+- RV-ASSIST-012, RV-ASSIST-013, offered as each passes its task suite.
 
 **Dependencies.** M3 query and comparison engines; `arc-solve` expression engine; schedule
 importers in `review-io`.
@@ -142,7 +147,7 @@ importers in `review-io`.
 **Scope.**
 - RV-XR-001 to RV-XR-021; RV-ISSUE-026.
 - RV-CLASH-014, RV-CLASH-028; RV-CHECK-011; RV-SEQ-025 to RV-SEQ-027; RV-COST-011.
-- RV-AUTO-006, RV-AUTO-021.
+- RV-ASSIST-014.
 - Schedule logic and estimating: RV-SEQ-028 to RV-SEQ-033; RV-COST-015 to RV-COST-019.
 
 **Dependencies.** OpenXR runtimes; Arc Hub session relay; suite assistant framework; `arc-brep`
